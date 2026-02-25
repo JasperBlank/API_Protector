@@ -9,18 +9,20 @@ It now includes an **LLM API key policy pack** with provider-specific remediatio
 
 - `api_key_guard.py` - CLI scanner
 - `install.ps1` - terminal installer/updater from GitHub raw
+- `install_pre_commit_hook.ps1` - installs git pre-commit hook
+- `FULL_SETUP_GUIDE.md` - complete setup + troubleshooting guide
 
 ## Quick Start
 
 ```powershell
-cd C:\Users\jjbla\startup-docs\Codex
+cd C:\Users\jjbla\API_Protector
 python .\api_key_guard.py C:\path\to\repo
 ```
 
 ## One-Line Terminal Install (after GitHub publish)
 
 ```powershell
-irm https://raw.githubusercontent.com/<owner>/<repo>/main/install.ps1 | iex; install.ps1 -Owner <owner> -Repo <repo>
+$p="$env:TEMP\api_protector_install.ps1"; irm https://raw.githubusercontent.com/JasperBlank/API_Protector/main/install.ps1 -OutFile $p; powershell -ExecutionPolicy Bypass -File $p -Owner JasperBlank -Repo API_Protector
 ```
 
 JSON output:
@@ -63,7 +65,7 @@ For each finding, JSON output includes `remediation` and a deduplicated `playboo
 Install into any local git repo:
 
 ```powershell
-cd C:\Users\jjbla\startup-docs\Codex
+cd C:\Users\jjbla\API_Protector
 .\install_pre_commit_hook.ps1 -RepoPath C:\path\to\your\repo -FailOn high
 ```
 
