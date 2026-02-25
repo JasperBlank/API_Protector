@@ -20,15 +20,17 @@ if ($allowed -notcontains $FailOn) {
 $hookPath = Join-Path $gitDir "hooks\pre-commit"
 $scannerPath = (Resolve-Path "$PSScriptRoot\api_key_guard.py").Path.Replace("\", "/")
 
-$hookContent = @'
+$hookContent = @"
 #!/bin/sh
-python "$scannerPath" "." --fail-on $FailOn
-status=$?
-if [ $status -ne 0 ]; then
+python "__SCANNER__" "." --fail-on __FAILON__
+status=`$?
+if [ `$status -ne 0 ]; then
   echo "Commit blocked by API Key Guard."
-  exit $status
+  exit `$status
 fi
-'@
+"@
+
+$hookContent = $hookContent.Replace("__SCANNER__", $scannerPath).Replace("__FAILON__", $FailOn)
 
 Set-Content -Path $hookPath -Value $hookContent -NoNewline
 Write-Host "Installed pre-commit hook at: $hookPath"
