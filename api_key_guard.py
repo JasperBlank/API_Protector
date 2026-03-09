@@ -120,6 +120,7 @@ def is_binary(path: Path) -> bool:
 
 def redacted_preview(line: str) -> str:
     compact = " ".join(line.strip().split())
+    compact = re.sub(r'(=\s*)([A-Za-z0-9\-_]{12})[A-Za-z0-9\-_]+', r'\1\2********', compact)
     if len(compact) <= 120:
         return compact
     return compact[:117] + "..."
